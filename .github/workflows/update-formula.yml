@@ -1,0 +1,53 @@
+name: Update 1Claw formula
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *" # every 6 hours
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get latest version from npm
+        id: npm
+        run: |
+          LATEST=$(npm view @1claw/cli version)
+          echo "version=$LATEST" >> "$GITHUB_OUTPUT"
+          echo "Latest npm version: $LATEST"
+
+      - name: Get current formula version
+        id: formula
+        run: |
+          CURRENT=$(grep -oP 'cli-\K[0-9.]+' Formula/1claw.rb | head -1)
+          echo "version=$CURRENT" >> "$GITHUB_OUTPUT"
+          echo "Current formula version: $CURRENT"
+
+      - name: Update formula if new version
+        if: steps.npm.outputs.version != steps.formula.outputs.version
+        run: |
+          VERSION="${{ steps.npm.outputs.version }}"
+          URL="https://registry.npmjs.org/@1claw/cli/-/cli-${VERSION}.tgz"
+          SHA=$(curl -sL "$URL" | shasum -a 256 | awk '{print $1}')
+
+          echo "Updating to $VERSION (sha256: $SHA)"
+
+          sed -i "s|url \"https://registry.npmjs.org/@1claw/cli/-/cli-.*\.tgz\"|url \"${URL}\"|" Formula/1claw.rb
+          sed -i "s|sha256 \".*\"|sha256 \"${SHA}\"|" Formula/1claw.rb
+
+          cat Formula/1claw.rb
+
+      - name: Commit and push
+        if: steps.npm.outputs.version != steps.formula.outputs.version
+        run: |
+          VERSION="${{ steps.npm.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/1claw.rb
+          git commit -m "Update 1claw to v${VERSION}"
+          git push
