@@ -2,6 +2,8 @@ name: Update 1Claw formula
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [cli-published]
   schedule:
     - cron: "0 */6 * * *" # every 6 hours
 
@@ -24,7 +26,12 @@ jobs:
       - name: Get current formula version
         id: formula
         run: |
-          CURRENT=$(grep -oP 'cli-\K[0-9.]+' Formula/1claw.rb | head -1)
+          FORMULA="Formula/1claw.rb"
+          if [[ ! -f "$FORMULA" ]]; then
+            echo "::error::Missing $FORMULA (expected Homebrew formula at Formula/1claw.rb)"
+            exit 1
+          fi
+          CURRENT=$(grep -oP 'cli-\K[0-9.]+' "$FORMULA" | head -1)
           echo "version=$CURRENT" >> "$GITHUB_OUTPUT"
           echo "Current formula version: $CURRENT"
 
