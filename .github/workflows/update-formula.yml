@@ -31,7 +31,7 @@ jobs:
             echo "::error::Missing $FORMULA (expected Homebrew formula at Formula/1claw.rb)"
             exit 1
           fi
-          CURRENT=$(grep -oP 'cli-\K[0-9.]+' "$FORMULA" | head -1)
+          CURRENT=$(grep -oP 'cli-\K[0-9]+\.[0-9]+\.[0-9]+' "$FORMULA" | head -1)
           echo "version=$CURRENT" >> "$GITHUB_OUTPUT"
           echo "Current formula version: $CURRENT"
 
@@ -56,5 +56,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add Formula/1claw.rb
+          if git diff --staged --quiet; then
+            echo "Formula already at v${VERSION}; nothing to commit."
+            exit 0
+          fi
           git commit -m "Update 1claw to v${VERSION}"
           git push
