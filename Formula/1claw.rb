@@ -1,8 +1,8 @@
 class Oneclaw < Formula
   desc "CLI for 1Claw — secrets management for AI agents"
   homepage "https://1claw.xyz"
-  url "https://registry.npmjs.org/@1claw/cli/-/cli-0.53.3.tgz"
-  sha256 "7cadc9182fdb95adb57da2bbc0bcb39d5cae74b00b94a5a768f048c69c4743a8"
+  url "https://registry.npmjs.org/@1claw/cli/-/cli-0.55.0.tgz"
+  sha256 "053e79eaf7409596952a91a188b1c67ffa4d9a83e816785bac73b05d23f35d78"
   license "MIT"
 
   depends_on "node"
