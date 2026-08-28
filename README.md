@@ -1,6 +1,6 @@
 # 1Claw Homebrew Tap
 
-Homebrew formulae for [1Claw](https://1claw.xyz) — secrets management for AI agents.
+Homebrew formulae for [1Claw](https://1claw.co) — secrets management for AI agents.
 
 ## Install
 
@@ -31,6 +31,6 @@ Current npm release: `@1claw/cli` **v0.58.1**. The Homebrew formula may lag npm 
 
 ## More info
 
-- [Documentation](https://docs.1claw.xyz)
+- [Documentation](https://docs.1claw.co)
 - [npm package](https://www.npmjs.com/package/@1claw/cli)
 - [GitHub](https://github.com/1clawAI/1claw)
