@@ -27,7 +27,7 @@ brew install 1claw
 brew upgrade 1claw
 ```
 
-Current npm release: `@1claw/cli` **v0.58.1**. The Homebrew formula may lag npm between releases — use `npm install -g @1claw/cli` for the latest version immediately.
+Current npm release: `@1claw/cli` **v0.61.22**. The Homebrew formula may lag npm between releases — use `npm install -g @1claw/cli` for the latest version immediately.
 
 ## More info
 
